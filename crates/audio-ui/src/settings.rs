@@ -54,7 +54,7 @@ impl Settings {
 fn path() -> Result<PathBuf> {
     let dir = dirs::data_dir()
         .context("no Application Support directory")?
-        .join("wsctl");
+        .join("audioctl");
     std::fs::create_dir_all(&dir).with_context(|| format!("could not create {}", dir.display()))?;
     Ok(dir.join("audio-ui.json"))
 }

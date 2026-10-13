@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # Builds the two Core Audio HAL plug-ins that carry audio between apps and the
-# wsctl audio bridge. Needs the Command Line Tools; Xcode is not required.
+# audioctl bridge. Needs the Command Line Tools; Xcode is not required.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SRC="$HERE/vendor/BlackHole.c"
 OUT="${1:-$HERE/build}"
 VERSION=0.7.1
+ARCH_FLAGS=()
+for a in ${DRIVER_ARCHS:-arm64 x86_64}; do ARCH_FLAGS+=(-arch "$a"); done
 
 # Identifies each plug-in to Core Audio. Stable by design: regenerating these
 # changes the device UIDs, and anything that had selected a device loses it.
@@ -22,7 +24,7 @@ build_bundle() {
   mkdir -p "$drv/Contents/MacOS"
 
   clang -bundle -o "$drv/Contents/MacOS/$product" "$SRC" \
-    -arch arm64 -arch x86_64 -mmacosx-version-min=13.0 -O2 \
+    "${ARCH_FLAGS[@]}" -mmacosx-version-min=13.0 -O2 \
     -framework CoreAudio -framework CoreFoundation -framework Accelerate \
     -DkPlugIn_BundleID="\"$bundle_id\"" \
     -DkHas_Driver_Name_Format=false \
@@ -39,8 +41,8 @@ build_bundle() {
   # Sign last. The signature seals Info.plist, and the loader hard-rejects an
   # invalid signature while merely tolerating an absent one, so editing the
   # plist after signing silently stops the plug-in loading.
-  codesign --force --sign - "$drv"
-  codesign --verify "$drv"
+  "${CODESIGN:-codesign}" --force --sign - "$drv"
+  "${CODESIGN:-codesign}" --verify "$drv"
   echo "  built $product.driver"
 }
 

@@ -1,0 +1,35 @@
+[workspace]
+resolver = "2"
+members = ["crates/audio", "crates/audio-ui"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+authors = ["pj <ipriyanshujain@gmail.com>"]
+license = "GPL-3.0-or-later"
+
+[workspace.dependencies]
+anyhow = "1.0"
+clap = { version = "4.6", features = ["derive"] }
+console = "0.16"
+dirs = "6.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+audio = { path = "crates/audio" }
+
+[package]
+name = "audioctl"
+version.workspace = true
+edition.workspace = true
+authors.workspace = true
+license.workspace = true
+description = "Virtual audio devices and an echo-cancelling bridge for macOS"
+
+[dependencies]
+audio.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+console.workspace = true
+tracing-subscriber.workspace = true

@@ -1,4 +1,4 @@
-//! Menu bar app for the wsctl audio bridge: pick the real microphone and
+//! Menu bar app for the audioctl bridge: pick the real microphone and
 //! speaker, switch the bridge on. There is no window, and there never is one.
 
 mod bridge;
@@ -42,13 +42,13 @@ fn main() {
     if let Some(button) = status_item.button(mtm) {
         match NSImage::imageWithSystemSymbolName_accessibilityDescription(
             ns_string!("waveform"),
-            Some(ns_string!("wsctl audio")),
+            Some(ns_string!("audioctl")),
         ) {
             Some(image) => {
                 image.setTemplate(true);
                 button.setImage(Some(&image));
             }
-            None => button.setTitle(ns_string!("wsctl")),
+            None => button.setTitle(ns_string!("audioctl")),
         }
     }
     status_item.setMenu(Some(&menu));

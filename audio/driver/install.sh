@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Installs the wsctl HAL plug-ins into /Library/Audio/Plug-Ins/HAL. Run with sudo.
+# Installs the audioctl HAL plug-ins into /Library/Audio/Plug-Ins/HAL. Run with sudo.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

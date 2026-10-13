@@ -2,7 +2,7 @@
 //!
 //! Enumeration is this crate's, because the menu needs names and the engine
 //! only ever wants UIDs. Everything else is the engine in the `audio` crate,
-//! which the `wsctl` CLI drives through the same calls.
+//! which the `audioctl` CLI drives through the same calls.
 
 use anyhow::Result;
 

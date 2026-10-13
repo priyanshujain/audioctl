@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Wraps the wsctl-audio binary in an .app. The bundle is what lets the app hold
+# Wraps the audioctl-ui binary in an .app. The bundle is what lets the app hold
 # a microphone permission of its own: a bare binary run from a terminal is
 # attributed to the terminal instead, and a denied microphone reads as silence
 # rather than as an error.
@@ -10,20 +10,20 @@ ROOT="$(cd "$HERE/../.." && pwd)"
 OUT="${1:-$ROOT/target}"
 PROFILE="${PROFILE:-release}"
 
-APP="$OUT/wsctl-audio.app"
+APP="$OUT/audioctl-ui.app"
 BUNDLE_ID=dev.pj.workstation.audio-ui
 VERSION="$(sed -n 's/^version = "\(.*\)"/\1/p' "$ROOT/Cargo.toml" | head -1)"
 
 cargo build --manifest-path "$ROOT/Cargo.toml" -p audio-ui --profile "$PROFILE"
 
 case "$PROFILE" in
-  dev|test) BIN="$ROOT/target/debug/wsctl-audio" ;;
-  *)        BIN="$ROOT/target/$PROFILE/wsctl-audio" ;;
+  dev|test) BIN="$ROOT/target/debug/audioctl-ui" ;;
+  *)        BIN="$ROOT/target/$PROFILE/audioctl-ui" ;;
 esac
 
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS"
-cp "$BIN" "$APP/Contents/MacOS/wsctl-audio"
+cp "$BIN" "$APP/Contents/MacOS/audioctl-ui"
 
 cat > "$APP/Contents/Info.plist" <<PLIST
 <?xml version="1.0" encoding="UTF-8"?>
@@ -33,11 +33,11 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 	<key>CFBundleIdentifier</key>
 	<string>$BUNDLE_ID</string>
 	<key>CFBundleName</key>
-	<string>wsctl audio</string>
+	<string>audioctl</string>
 	<key>CFBundleDisplayName</key>
-	<string>wsctl audio</string>
+	<string>audioctl</string>
 	<key>CFBundleExecutable</key>
-	<string>wsctl-audio</string>
+	<string>audioctl-ui</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleInfoDictionaryVersion</key>
@@ -51,7 +51,7 @@ cat > "$APP/Contents/Info.plist" <<PLIST
 	<key>LSUIElement</key>
 	<true/>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>wsctl reads your microphone so the audio bridge can cancel the echo of your speakers before other apps hear you.</string>
+	<string>audioctl reads your microphone so the audio bridge can cancel the echo of your speakers before other apps hear you.</string>
 	<key>NSHighResolutionCapable</key>
 	<true/>
 </dict>

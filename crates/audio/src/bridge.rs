@@ -141,7 +141,7 @@ pub struct Stats {
     /// what silence looks like as well as what failure looks like.
     pub found_delay_ms: i32,
     /// Whether the starting point was measured against this pair of devices by
-    /// `wsctl audio calibrate`, or is only what Core Audio claims.
+    /// `audioctl calibrate`, or is only what Core Audio claims.
     pub calibrated: bool,
     /// Whether that measurement is old enough that it should not be quoted as
     /// describing the hardware as it is now. It is still used as a starting
@@ -178,11 +178,11 @@ struct Engine {
 impl Engine {
     fn start(input_uid: &str, output_uid: &str) -> Result<Self> {
         let tap = device::open(TAP_UID, Direction::Input)
-            .context("the wsctl virtual devices are missing, run: wsctl audio install")?;
+            .context("the audioctl virtual devices are missing, run: audioctl install")?;
         let feed = device::open(FEED_UID, Direction::Output)
-            .context("the wsctl virtual devices are missing, run: wsctl audio install")?;
+            .context("the audioctl virtual devices are missing, run: audioctl install")?;
 
-        // What `wsctl audio calibrate` measured for this exact pair, if anyone
+        // What `audioctl calibrate` measured for this exact pair, if anyone
         // ever ran it. Nothing here can fail: an unmeasured pair, an unreadable
         // file and a file from another version all mean the same thing, which
         // is that the starting point comes from what Core Audio reports and
@@ -223,7 +223,7 @@ impl Engine {
         ]));
 
         let worker = std::thread::Builder::new()
-            .name("wsctl-bridge".into())
+            .name("audioctl-bridge".into())
             .spawn({
                 let shared = shared.clone();
                 move || run_canceller(shared)
@@ -245,7 +245,7 @@ impl Engine {
 
         engine.supervisor = Some(
             std::thread::Builder::new()
-                .name("wsctl-bridge-devices".into())
+                .name("audioctl-bridge-devices".into())
                 .spawn({
                     let shared = engine.shared.clone();
                     let endpoints = engine.endpoints.clone();
@@ -436,7 +436,7 @@ fn attach(endpoint: &Endpoint, shared: &Arc<Shared>) -> Result<Attached> {
 /// microphone and the capture ring before it is handed over in its turn. The
 /// reference itself is handed over slightly late, which comes back off.
 ///
-/// `correction_ms` is what `wsctl audio calibrate` found the devices' own
+/// `correction_ms` is what `audioctl calibrate` found the devices' own
 /// reported latencies to be out by, and is zero until somebody measures it. It
 /// carries the flight through the air, which Core Audio cannot know about, and
 /// whatever the device lied about, which for a Bluetooth speaker is the larger

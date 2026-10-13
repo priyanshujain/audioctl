@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Removes the wsctl HAL plug-ins. Run with sudo.
+# Removes the audioctl HAL plug-ins. Run with sudo.
 set -euo pipefail
 
 HAL=/Library/Audio/Plug-Ins/HAL

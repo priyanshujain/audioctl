@@ -7,7 +7,7 @@ license.workspace = true
 description = "Menu bar app for picking the bridge endpoints and switching it on"
 
 [[bin]]
-name = "wsctl-audio"
+name = "audioctl-ui"
 path = "src/main.rs"
 
 [dependencies]

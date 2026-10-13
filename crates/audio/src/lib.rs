@@ -102,7 +102,7 @@ pub fn uninstall() -> Result<()> {
 /// Unpacks the embedded bundles into a scratch directory as the current user.
 /// Only the copy into /Library needs root, so the extraction stays unprivileged.
 fn stage() -> Result<PathBuf> {
-    let dir = std::env::temp_dir().join("wsctl-audio");
+    let dir = std::env::temp_dir().join("audioctl");
     let _ = std::fs::remove_dir_all(&dir);
     std::fs::create_dir_all(&dir).with_context(|| format!("could not create {}", dir.display()))?;
 

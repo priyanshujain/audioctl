@@ -406,9 +406,9 @@ fn read_probes(
 fn refuse_virtual(uid: &str) -> Result<()> {
     if uid.starts_with("WSSpeaker") || uid.starts_with("WSMicrophone") {
         bail!(
-            "{uid} is one of the wsctl virtual devices. Calibrating against it would measure \
+            "{uid} is one of the audioctl virtual devices. Calibrating against it would measure \
              the bridge's own loopback rather than the room, so pick the real hardware: \
-             wsctl audio devices"
+             audioctl devices"
         );
     }
     Ok(())
